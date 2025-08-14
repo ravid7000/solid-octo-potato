@@ -1,0 +1,106 @@
+{
+  "tables": {
+    "categories": "data/categories.csv",
+    "customers": "data/customers.csv",
+    "employee_territories": "data/employee_territories.csv",
+    "employees": "data/employees.csv",
+    "order_details": "data/order_details.csv",
+    "orders": "data/orders.csv",
+    "products": "data/products.csv",
+    "suppliers": "data/suppliers.csv"
+  },
+  "columns": {
+    "categories": [
+      "categoryID",
+      "categoryName",
+      "description",
+      "picture"
+    ],
+    "customers": [
+      "customerID",
+      "companyName",
+      "contactName",
+      "contactTitle",
+      "address",
+      "city",
+      "region",
+      "postalCode",
+      "country",
+      "phone",
+      "fax"
+    ],
+    "employee_territories": [
+      "employeeID",
+      "territoryID"
+    ],
+    "employees": [
+      "employeeID",
+      "lastName",
+      "firstName",
+      "title",
+      "titleOfCourtesy",
+      "birthDate",
+      "hireDate",
+      "address",
+      "city",
+      "region",
+      "postalCode",
+      "country",
+      "homePhone",
+      "extension",
+      "photo",
+      "notes",
+      "reportsTo",
+      "photoPath"
+    ],
+    "order_details": [
+      "orderID",
+      "productID",
+      "unitPrice",
+      "quantity",
+      "discount"
+    ],
+    "orders": [
+      "orderID",
+      "customerID",
+      "employeeID",
+      "orderDate",
+      "requiredDate",
+      "shippedDate",
+      "shipVia",
+      "freight",
+      "shipName",
+      "shipAddress",
+      "shipCity",
+      "shipRegion",
+      "shipPostalCode",
+      "shipCountry"
+    ],
+    "products": [
+      "productID",
+      "productName",
+      "supplierID",
+      "categoryID",
+      "quantityPerUnit",
+      "unitPrice",
+      "unitsInStock",
+      "unitsOnOrder",
+      "reorderLevel",
+      "discontinued"
+    ],
+    "suppliers": [
+      "supplierID",
+      "companyName",
+      "contactName",
+      "contactTitle",
+      "address",
+      "city",
+      "region",
+      "postalCode",
+      "country",
+      "phone",
+      "fax",
+      "homePage"
+    ]
+  }
+}

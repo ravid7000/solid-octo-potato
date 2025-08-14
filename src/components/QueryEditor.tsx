@@ -10,12 +10,11 @@ import Button from "./Button";
 
 function QueryEditor() {
   return (
-    <div className="w-full border-2 border-[#204E82] pr-2 py-5 rounded-lg">
+    <div className="w-full border-2 border-[#204E82] pr-2 py-5 rounded-lg bg-white">
       <Editor
         height="100px"
         language="sql"
         options={{
-          lineNumbers: "off",
           automaticLayout: true,
           minimap: {
             enabled: false,
