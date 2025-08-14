@@ -4,6 +4,7 @@ type ButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
   color?: "primary" | "default";
   asIcon?: boolean;
+  disabled?: boolean;
 };
 
 const buttonColors = {
@@ -18,7 +19,7 @@ function Button({ children, color, asIcon, ...rest }: ButtonProps) {
     <button
       {...rest}
       className={twMerge(
-        "select-none transition-colors rounded-sm cursor-pointer font-bold inline-flex text-center items-center justify-center text-xs",
+        "select-none transition-colors rounded-sm cursor-pointer font-bold inline-flex gap-2 text-center items-center justify-center text-xs disabled:opacity-70 disabled:pointer-events-none",
         asIcon ? "px-3 py-2" : "px-4 py-2",
         colorStyles
       )}
