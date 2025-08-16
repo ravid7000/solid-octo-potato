@@ -8,7 +8,13 @@ import { FaMagic } from "react-icons/fa";
 
 import Button from "./Button";
 
-function QueryEditor() {
+type QueryEditorProps = {
+  value: string;
+  onValueChange: (value: string | undefined) => void;
+  onRunClick: () => void;
+};
+
+function QueryEditor({ value, onValueChange, onRunClick }: QueryEditorProps) {
   return (
     <div className="w-full border-2 border-[#204E82] pr-2 py-5 rounded-lg bg-white">
       <Editor
@@ -25,7 +31,8 @@ function QueryEditor() {
             indentation: false,
           },
         }}
-        value="SELECT * FROM users"
+        value={value}
+        onChange={onValueChange}
       />
       <div className="flex gap-2 pt-2 pl-6 pr-4">
         <Button title="Generate Sample Query" asIcon>
@@ -33,7 +40,7 @@ function QueryEditor() {
         </Button>
         <div className="mr-auto" />
         <Button title="Format Query">Format SQL</Button>
-        <Button color="primary" title="Run Query">
+        <Button color="primary" title="Run Query" onClick={onRunClick}>
           <MdKeyboardCommandKey />
           <MdAdd />
           <MdOutlineKeyboardReturn />

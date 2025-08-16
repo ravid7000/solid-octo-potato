@@ -1,13 +1,19 @@
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+
 import Layout from "../components/Layout";
-import QueryPannel from "./components/QueryPannel";
-import ResultPannel from "./components/ResultPannel";
+import QueryPanel from "./components/QueryPanel";
+import ResultPanel from "./components/ResultPanel";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <Layout>
-      <QueryPannel />
-      <ResultPannel />
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <Layout>
+        <QueryPanel />
+        <ResultPanel />
+      </Layout>
+    </QueryClientProvider>
   );
 }
 

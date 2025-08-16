@@ -8,20 +8,14 @@ type TableProps = React.HTMLAttributes<HTMLTableElement> & {
   footer?: React.ReactNode;
 };
 
-type CellProps = React.HTMLAttributes<HTMLTableCellElement> & {
-  as?: "td" | "th";
-};
+type CellProps = React.HTMLAttributes<HTMLTableCellElement>;
 
-function Cell({ children, as }: CellProps) {
-  if (as === "th") {
-    return <th className="px-2 text-start">{children}</th>;
-  }
-
-  return <td className="px-2">{children}</td>;
+function Cell({ children }: CellProps) {
+  return <div className="px-2 text-start min-w-24">{children}</div>;
 }
 
 function Row({ children, ...rest }: React.HTMLAttributes<HTMLTableRowElement>) {
-  return <tr {...rest}>{children}</tr>;
+  return <div {...rest}>{children}</div>;
 }
 
 const ROW_HEIGHT = 24;
@@ -38,17 +32,15 @@ function Table({ grid, footer }: TableProps) {
   return (
     <div className="rounded-md overflow-hidden bg-white">
       <div className="flex flex-auto flex-col items-stretch pb-3">
-        <table className="w-full">
-          <thead>
-            <Row className="bg-slate-300">
+        <div role="table" className="w-full">
+          <div>
+            <Row className="bg-slate-300 flex">
               {grid.headers.map((header, index) => (
-                <Cell as="th" key={`${header}_${index}`}>
-                  {header}
-                </Cell>
+                <Cell key={`${header}_${index}`}>{header}</Cell>
               ))}
             </Row>
-          </thead>
-          <tbody>
+          </div>
+          <div className="flex">
             <List
               height={listHeight}
               itemSize={ROW_HEIGHT}
@@ -60,7 +52,7 @@ function Table({ grid, footer }: TableProps) {
                 return (
                   <Row
                     key={`row_${index}`}
-                    className="hover:bg-blue-50 transition-colors duration-200 cursor-pointer"
+                    className="hover:bg-blue-50 transition-colors duration-200 cursor-pointer flex"
                     style={style}
                   >
                     {row.map((cell, index) => (
@@ -70,8 +62,8 @@ function Table({ grid, footer }: TableProps) {
                 );
               }}
             </List>
-          </tbody>
-        </table>
+          </div>
+        </div>
       </div>
       {footer}
     </div>

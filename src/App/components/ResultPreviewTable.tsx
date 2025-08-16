@@ -1,4 +1,5 @@
 import Table from "../../components/Table";
+import { useCurrentTable } from "../states/states";
 
 const data = {
   headers: ["ID", "Name"],
@@ -10,6 +11,10 @@ const data = {
 };
 
 function ResultPreviewTable() {
+  const currentTable = useCurrentTable((state) => state.table);
+
+  console.log(currentTable);
+
   return (
     <div>
       <Table grid={data} />
