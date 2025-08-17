@@ -5,20 +5,65 @@ import type {
   CreateSchemaState,
   CurrentTableAction,
   CurrentTableState,
+  QueryExecutionAction,
+  QueryExecutionState,
   Tables,
 } from "./types";
-import { parseTableDataFromCSV } from "./helpers";
+import { delay, parseTableDataFromCSV } from "./helpers";
+import { QUERY_EXECUTION_STATE_PROGRESS } from "./constants";
+
+export const useQueryExecution = create<QueryExecutionState>(() => ({
+  status: "idle" as QueryExecutionState["status"],
+  progress: 0,
+  startedAt: 0,
+  completedAt: 0,
+  hideProgress: true,
+}));
+
+const setQueryExecutionState: QueryExecutionAction["setState"] = (
+  nextState
+) => {
+  useQueryExecution.setState((prevState) => ({
+    status: nextState,
+    progress: QUERY_EXECUTION_STATE_PROGRESS[nextState],
+    startedAt: nextState === "sending" ? Date.now() : prevState.startedAt,
+    completedAt: nextState === "completed" ? Date.now() : prevState.completedAt,
+    hideProgress: false,
+  }));
+
+  if (nextState === "completed") {
+    // simulation: reset status to idle after sometime
+    setTimeout(() => {
+      useQueryExecution.setState({
+        hideProgress: true,
+      });
+    }, 100);
+  }
+};
 
 export const useCurrentTable = create<CurrentTableState & CurrentTableAction>(
   (set) => ({
     table: "",
     isLoading: false,
+    isDataLoaded: false,
+    data: null,
     error: "",
     setTable: async (tableName: Tables, tableLocation: string) => {
       try {
+        // simulating query status api
+        setQueryExecutionState("sending");
+        await delay(1000);
+
+        // simulating query status api
+        setQueryExecutionState("executing");
         set({ isLoading: true, table: tableName, error: "" });
-        const responseText = await fetchTable(tableLocation);
-        parseTableDataFromCSV(responseText);
+        const csv = await fetchTable(tableLocation);
+        const result = parseTableDataFromCSV(csv);
+
+        set({
+          data: result,
+          isDataLoaded: true, // first time table data loaded indicator
+        });
       } catch (err) {
         set({
           error: `Something went wrong!. Try again after sometime. Error: ${
@@ -29,6 +74,8 @@ export const useCurrentTable = create<CurrentTableState & CurrentTableAction>(
         set({
           isLoading: false,
         });
+
+        setQueryExecutionState("completed");
       }
     },
   })

@@ -12,9 +12,15 @@ type QueryEditorProps = {
   value: string;
   onValueChange: (value: string | undefined) => void;
   onRunClick: () => void;
+  onMagicClick: () => void;
 };
 
-function QueryEditor({ value, onValueChange, onRunClick }: QueryEditorProps) {
+function QueryEditor({
+  value,
+  onValueChange,
+  onRunClick,
+  onMagicClick,
+}: QueryEditorProps) {
   return (
     <div className="w-full border-2 border-[#204E82] pr-2 py-5 rounded-lg bg-white">
       <Editor
@@ -35,7 +41,7 @@ function QueryEditor({ value, onValueChange, onRunClick }: QueryEditorProps) {
         onChange={onValueChange}
       />
       <div className="flex gap-2 pt-2 pl-6 pr-4">
-        <Button title="Generate Sample Query" asIcon>
+        <Button title="Generate Sample Query" asIcon onClick={onMagicClick}>
           <FaMagic />
         </Button>
         <div className="mr-auto" />

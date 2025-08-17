@@ -1,23 +1,19 @@
 import Table from "../../components/Table";
 import { useCurrentTable } from "../states/states";
 
-const data = {
-  headers: ["ID", "Name"],
-  body: [
-    ["1", "John Doe"],
-    ["2", "Jane Smith"],
-    ["3", "Bob Johnson"],
-  ],
-};
-
 function ResultPreviewTable() {
-  const currentTable = useCurrentTable((state) => state.table);
+  const isLoading = useCurrentTable((state) => state.isLoading);
+  const isDataLoaded = useCurrentTable((state) => state.isDataLoaded);
+  const tableData = useCurrentTable((state) => state.data);
 
-  console.log(currentTable);
+  if (!tableData || isLoading || !isDataLoaded) {
+    return null;
+  }
 
   return (
     <div>
-      <Table grid={data} />
+      {isLoading ? <div>Loading...</div> : null}
+      {!isLoading && tableData ? <Table grid={tableData} /> : null}
     </div>
   );
 }

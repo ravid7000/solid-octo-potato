@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { Parser } from "node-sql-parser";
 import { useCurrentTable, useSchema } from "../../states/states";
 import type { Tables } from "../../states/types";
+import { QUERY_EXAMPLES } from "./constants";
 
 export function useQueryPanel() {
-  const [query, setQuery] = useState("SELECT * from categories;");
+  const [query, setQuery] = useState("SELECT * from order_details;");
   const [queryError, setQueryError] = useState("");
 
   const setCurrentTable = useCurrentTable((state) => state.setTable);
@@ -29,15 +30,22 @@ export function useQueryPanel() {
         const from = Array.isArray(ast.from) ? ast.from[0] : ast.from;
 
         if (from && "table" in from && schema?.tables) {
-          const table = (from.table as Tables) ?? "categories";
+          let table = from.table as Tables;
+          let tableLocation = schema.tables[table];
 
-          const tableLocation = schema.tables[table];
+          if (!tableLocation) {
+            // default table
+            table = "categories";
+            tableLocation = schema.tables.categories;
+          }
 
           setCurrentTable(table, tableLocation);
         }
       }
     } catch (err) {
-      setQueryError((err as Error).message);
+      setQueryError(
+        `Invalid query. Validation Error: ${(err as Error).message}`
+      );
     }
   }
 
@@ -45,6 +53,13 @@ export function useQueryPanel() {
     if (typeof inputValue === "string") {
       setQuery(inputValue);
     }
+  }
+
+  function handleMagicClick() {
+    const randomQuery =
+      QUERY_EXAMPLES[Math.floor(Math.random() * QUERY_EXAMPLES.length)];
+
+    setQuery(randomQuery);
   }
 
   useEffect(() => {
@@ -56,5 +71,6 @@ export function useQueryPanel() {
     queryError,
     handleQueryChange,
     handleOnQueryRun,
+    handleMagicClick,
   };
 }
