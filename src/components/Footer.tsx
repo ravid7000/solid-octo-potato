@@ -2,8 +2,8 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer>
-      <p className="text-sm text-center">Web SQL Runner {year}</p>
+    <footer className="py-8">
+      <p className="text-sm text-center font-bold">Web SQL Runner {year}</p>
     </footer>
   );
 }

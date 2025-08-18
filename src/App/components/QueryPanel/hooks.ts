@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Parser } from "node-sql-parser";
+import { format as sqlFormat } from "sql-formatter";
 import { useCurrentTable, useSchema } from "../../states/states";
 import type { Tables } from "../../states/types";
 import { QUERY_EXAMPLES } from "./constants";
@@ -9,7 +10,8 @@ export function useQueryPanel() {
   const [queryError, setQueryError] = useState("");
 
   const setCurrentTable = useCurrentTable((state) => state.setTable);
-  const schema = useSchema((state) => state.schema);
+  const isTableDataLoading = useCurrentTable((state) => state.isLoading);
+  const isTableDataLoaded = useCurrentTable((state) => state.isDataLoaded);
   const getSchema = useSchema((state) => state.getSchema);
 
   function handleOnQueryRun() {
@@ -28,6 +30,8 @@ export function useQueryPanel() {
 
       if (ast.type === "select") {
         const from = Array.isArray(ast.from) ? ast.from[0] : ast.from;
+
+        const { schema } = useSchema.getState();
 
         if (from && "table" in from && schema?.tables) {
           let table = from.table as Tables;
@@ -62,6 +66,14 @@ export function useQueryPanel() {
     setQuery(randomQuery);
   }
 
+  function handleFormatClick() {
+    if (!query.length) {
+      return;
+    }
+
+    setQuery(sqlFormat(query));
+  }
+
   useEffect(() => {
     getSchema();
   }, [getSchema]);
@@ -69,8 +81,11 @@ export function useQueryPanel() {
   return {
     query,
     queryError,
-    handleQueryChange,
+    isTableDataLoaded,
+    isTableDataLoading,
     handleOnQueryRun,
     handleMagicClick,
+    handleQueryChange,
+    handleFormatClick,
   };
 }

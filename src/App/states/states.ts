@@ -9,7 +9,12 @@ import type {
   QueryExecutionState,
   Tables,
 } from "./types";
-import { delay, parseTableDataFromCSV } from "./helpers";
+import {
+  delay,
+  downloadDataAsCSV,
+  downloadDataAsJSON,
+  parseTableDataFromCSV,
+} from "./helpers";
 import { QUERY_EXECUTION_STATE_PROGRESS } from "./constants";
 
 export const useQueryExecution = create<QueryExecutionState>(() => ({
@@ -42,21 +47,23 @@ const setQueryExecutionState: QueryExecutionAction["setState"] = (
 };
 
 export const useCurrentTable = create<CurrentTableState & CurrentTableAction>(
-  (set) => ({
+  (set, get) => ({
     table: "",
     isLoading: false,
     isDataLoaded: false,
+    isDownloading: false,
     data: null,
     error: "",
     setTable: async (tableName: Tables, tableLocation: string) => {
       try {
+        set({ isLoading: true, table: tableName, error: "" });
+
         // simulating query status api
         setQueryExecutionState("sending");
         await delay(1000);
 
         // simulating query status api
         setQueryExecutionState("executing");
-        set({ isLoading: true, table: tableName, error: "" });
         const csv = await fetchTable(tableLocation);
         const result = parseTableDataFromCSV(csv);
 
@@ -77,6 +84,32 @@ export const useCurrentTable = create<CurrentTableState & CurrentTableAction>(
 
         setQueryExecutionState("completed");
       }
+    },
+
+    download: async (type) => {
+      const { table, data } = get();
+
+      set({
+        isDownloading: true,
+      });
+
+      switch (type) {
+        case "csv": {
+          await downloadDataAsCSV(data, `${table}.csv`);
+          break;
+        }
+        case "json": {
+          await downloadDataAsJSON(data, `${table}.json`);
+          break;
+        }
+        default: {
+          // add more download types
+        }
+      }
+
+      set({
+        isDownloading: false,
+      });
     },
   })
 );

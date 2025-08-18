@@ -7,6 +7,8 @@ function ResultPreviewControls() {
   const isLoading = useCurrentTable((state) => state.isLoading);
   const isDataLoaded = useCurrentTable((state) => state.isDataLoaded);
   const rows = useCurrentTable((state) => state.data?.body?.length ?? 0);
+  const download = useCurrentTable((state) => state.download);
+  const isDownloading = useCurrentTable((state) => state.isDownloading);
 
   if (isLoading || !rows || !isDataLoaded) {
     return null;
@@ -19,7 +21,10 @@ function ResultPreviewControls() {
       </h6>
 
       <div className="ml-auto flex gap-2">
-        <Button>
+        <Button disabled={isDownloading} onClick={() => download("json")}>
+          <BsDownload /> Export JSON
+        </Button>
+        <Button disabled={isDownloading} onClick={() => download("csv")}>
           <BsDownload /> Export CSV
         </Button>
       </div>

@@ -34,11 +34,13 @@ export type CurrentTableState = {
   } | null;
   isLoading: boolean;
   isDataLoaded: boolean;
+  isDownloading: boolean;
   error: string;
 };
 
 export type CurrentTableAction = {
   setTable: (nextValue: Tables, tableLocation: string) => Promise<void>;
+  download: (type: "json" | "csv") => Promise<void>;
 };
 
 export type QueryExecutionState = {
