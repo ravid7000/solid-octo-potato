@@ -19,7 +19,7 @@ function Header() {
           </li>
           <li>
             <a
-              href="https://github.com/ravid7000/solid-octo-potato"
+              href="https://github.com/ravid7000/solid-octo-potato/blob/master/README.md"
               target="_blank"
               rel="noopener"
               className="inline-flex items-center gap-2"

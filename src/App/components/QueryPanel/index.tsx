@@ -1,8 +1,16 @@
+import { Suspense, lazy } from "react";
+
 import { MdError } from "react-icons/md";
 import Container from "../../../components/Container";
-import QueryEditor from "../../../components/QueryEditor";
 import QueryExecutionStatus from "../QueryExecutionStatus";
 import { useQueryPanel } from "./hooks";
+
+const QueryEditor = lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'QueryEditor' */ "../../../components/QueryEditor"
+    )
+);
 
 function QueryPanel() {
   const {
@@ -24,14 +32,16 @@ function QueryPanel() {
             isTableDataLoaded ? "h-0" : "h-[150px]"
           }`}
         />
-        <QueryEditor
-          value={query}
-          isRunning={isTableDataLoading}
-          onValueChange={handleQueryChange}
-          onRunClick={handleOnQueryRun}
-          onMagicClick={handleMagicClick}
-          onFormatClick={handleFormatClick}
-        />
+        <Suspense fallback={<div className="text-center">Loading...</div>}>
+          <QueryEditor
+            value={query}
+            isRunning={isTableDataLoading}
+            onValueChange={handleQueryChange}
+            onRunClick={handleOnQueryRun}
+            onMagicClick={handleMagicClick}
+            onFormatClick={handleFormatClick}
+          />
+        </Suspense>
         {queryError ? (
           <div className="bg-red-100 text-red-900 px-4 py-3 rounded-lg flex gap-2 items-center border border-red-200">
             <MdError /> {queryError}

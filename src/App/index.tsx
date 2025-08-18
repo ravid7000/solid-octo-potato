@@ -1,12 +1,18 @@
+import { Suspense, lazy } from "react";
 import Layout from "../components/Layout";
 import QueryPanel from "./components/QueryPanel";
-import ResultPanel from "./components/ResultPanel";
+
+const ResultPanel = lazy(
+  () => import(/* webpackChunkName: 'ResultPanel' */ "./components/ResultPanel")
+);
 
 function App() {
   return (
     <Layout>
       <QueryPanel />
-      <ResultPanel />
+      <Suspense fallback={null}>
+        <ResultPanel />
+      </Suspense>
     </Layout>
   );
 }
