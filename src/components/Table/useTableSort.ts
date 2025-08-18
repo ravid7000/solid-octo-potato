@@ -1,62 +1,38 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { defaultCompare } from "./helpers";
 
-export type SortDirection = "asc" | "desc" | null;
+type SortDirection = "asc" | "desc" | null;
 
-export type SortState = {
+type SortState = {
   columnIndex: number | null;
   direction: SortDirection;
 };
 
-export type GridData = {
+type GridData = {
   headers: string[];
   body: string[][];
 };
 
-export type UseTableSortOptions = {
-  initialSort?: SortState;
-};
+export function useTableSort(data: GridData) {
+  const [sort, setSort] = useState<SortState>({ columnIndex: null, direction: null });
 
-function defaultCompare(a: string, b: string): number {
-  const aNum = Number(a);
-  const bNum = Number(b);
-
-  const aIsNum = Number.isFinite(aNum) && a.trim() !== "";
-  const bIsNum = Number.isFinite(bNum) && b.trim() !== "";
-
-  if (aIsNum && bIsNum) {
-    return aNum - bNum;
-  }
-
-  return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
-}
-
-export function useTableSort(data: GridData, options: UseTableSortOptions = {}) {
-  const { initialSort } = options;
-
-  const [sort, setSort] = useState<SortState>(
-    initialSort ?? { columnIndex: null, direction: null }
-  );
-
-  const toggleSort = useCallback(
-    (columnIndex: number) => {
-      setSort((prev) => {
-        if (prev.columnIndex !== columnIndex) {
-          return { columnIndex, direction: "asc" };
-        }
-
-        if (prev.direction === "asc") {
-          return { columnIndex, direction: "desc" };
-        }
-
-        if (prev.direction === "desc") {
-          return { columnIndex: null, direction: null };
-        }
-
+  function toggleSort(columnIndex: number) {
+    setSort((prev) => {
+      if (prev.columnIndex !== columnIndex) {
         return { columnIndex, direction: "asc" };
-      });
-    },
-    []
-  );
+      }
+
+      if (prev.direction === "asc") {
+        return { columnIndex, direction: "desc" };
+      }
+
+      if (prev.direction === "desc") {
+        return { columnIndex: null, direction: null };
+      }
+
+      return { columnIndex, direction: "asc" };
+    });
+  }
 
   const sortedBody = useMemo(() => {
     const { body } = data;
@@ -77,11 +53,9 @@ export function useTableSort(data: GridData, options: UseTableSortOptions = {}) 
     return decorated.map((d) => d.row);
   }, [data, sort]);
 
-  const getColumnDirection = useCallback(
-    (columnIndex: number): SortDirection =>
-      sort.columnIndex === columnIndex ? sort.direction : null,
-    [sort]
-  );
+  function getColumnDirection(columnIndex: number): SortDirection {
+    return sort.columnIndex === columnIndex ? sort.direction : null
+  }
 
   return {
     sortedBody,

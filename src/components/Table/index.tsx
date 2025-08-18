@@ -1,4 +1,5 @@
 import React from "react";
+import { MdArrowDownward, MdArrowUpward } from 'react-icons/md';
 import { Row } from "./Row";
 import { Cell } from "./Cell";
 import { VirtualTable } from "./VirtualTable";
@@ -47,12 +48,14 @@ function Table({ grid, footer }: TableProps) {
                       className="cursor-pointer select-none"
                       title="Click to sort"
                     >
+                      <div className="inline-flex items-center gap-2">
                       <span>{header}</span>
                       {dir && (
-                        <span className="ml-1 text-slate-700">
-                          {dir === "asc" ? "▲" : "▼"}
+                        <span className="text-slate-700">
+                          {dir === "asc" ? <MdArrowUpward /> : <MdArrowDownward />}
                         </span>
                       )}
+                      </div>
                     </Cell>
                   );
                 })}
