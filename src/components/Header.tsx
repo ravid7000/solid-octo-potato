@@ -9,7 +9,7 @@ function Header() {
         <ul className="flex items-center gap-4">
           <li>
             <a
-              href="https://github.com/ravid7000"
+              href="https://github.com/ravid7000/solid-octo-potato"
               target="_blank"
               rel="noopener"
               className="inline-flex items-center gap-2"
