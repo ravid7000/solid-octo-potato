@@ -41,7 +41,7 @@ function QueryExecutionStatus() {
       <div className="flex justify-between">
         {header ? <h5 className="text-sm font-bold">{header}</h5> : null}
         {status === "completed" ? (
-          <h5 className="text-sm font-bold">Executed on {date}</h5>
+          <h5 className="text-sm font-bold">Executed at {date}</h5>
         ) : null}
       </div>
 

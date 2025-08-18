@@ -4,12 +4,10 @@ import ResultPreviewTable from "./ResultPreviewTable";
 
 function ResultPanel() {
   return (
-    <div className="min-h-[50vh]">
-      <Container>
-        <ResultPreviewControls />
-        <ResultPreviewTable />
-      </Container>
-    </div>
+    <Container>
+      <ResultPreviewControls />
+      <ResultPreviewTable />
+    </Container>
   );
 }
 
