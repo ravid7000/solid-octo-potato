@@ -3,7 +3,9 @@ function Footer() {
 
   return (
     <footer className="py-8">
-      <p className="text-sm text-center font-bold">Web SQL Runner {year}</p>
+      <p className="text-sm text-center font-bold">
+        Built with React, Typescript, Zustand &copy; {year}
+      </p>
     </footer>
   );
 }

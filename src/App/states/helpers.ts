@@ -24,7 +24,7 @@ export function parseTableDataFromCSV(data: string) {
  * @param time
  * @returns
  */
-export function delay(time = Math.random() * 1000) {
+export function delay(time = Math.random() * 300) {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve(time);
