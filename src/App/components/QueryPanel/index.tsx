@@ -5,12 +5,7 @@ import Container from "../../../components/Container";
 import QueryExecutionStatus from "../QueryExecutionStatus";
 import { useQueryPanel } from "./hooks";
 
-const QueryEditor = lazy(
-  () =>
-    import(
-      /* webpackChunkName: 'QueryEditor' */ "../../../components/QueryEditor"
-    )
-);
+const QueryEditor = lazy(() => import("../../../components/QueryEditor"));
 
 function QueryPanel() {
   const {

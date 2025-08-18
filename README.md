@@ -60,6 +60,34 @@ src/
 
 ## Page Load time
 
+I used Lighthouse from Chrome devtools to measure page load time.
+
+- **FCP**: less than 1 second.
+- **LCP**: 2 seconds, because of monaco editor rendering.
+- **TBT**: 40 ms, already optimized.
+
 ## Optimization
 
-This app is built using CSR(client side rendering) strategy. This the application is small in size, but still we can do the initial page loading optimization.
+This app is built using CSR(client side rendering) strategy. This the application is small in size, but still we can optimize the initial load time:
+
+### Bundle Size Optimization
+
+a. Lazy load the QueryEditor component which is loading monaco editor under the hood.
+b. Lazy load the ResultPanel component which is loading the table component with react-window dependency.
+c. I used rollup-plugin-visualizer bundle analyzer to further debug the assets in the bundles.
+
+### Assets optimization
+
+a. Implemented fonts from CDN (google CDN)
+b. Using SVG based icons with react-icon packages
+c. Data CSVs are downloaded on demand.
+
+### Performance at Runtime
+
+a. I've implemented react-window to load large dataset in the table
+b. Used react hooks like useMemo at the places where we can optimize the computations.
+
+## Future Scope
+
+- **Unit Tests**: Use vitest as unit testing framework to test the components in isolation.
+- **E2E Tests**: Use playwright as e2e testing framework for UI and accessibility testing.
