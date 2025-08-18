@@ -1,69 +1,65 @@
-# React + TypeScript + Vite
+# SQL Runner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Key Implementation Highlights
 
-Currently, two official plugins are available:
+- Editor: Monaco with Run (Cmd/Ctrl + Enter) and Format (Cmd/Ctrl + K) shortcuts
+- State: `zustand` stores global state and actions;
+- Table: `react-window` virtualization, sticky header, per-column sorting
+- Export: JSON and CSV downloads
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Local Development
 
-## Expanding the ESLint configuration
+1. Install: `npm install`
+2. Run dev: `npm run dev`
+3. Open the app and load a table from the dataset to preview and interact with results
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Project Structure
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+public/
+  data/                 # CSV dataset used by the app
+src/
+  App/
+    components/         # App-level UI (Query panel, Result panel)
+    states/             # Zustand stores, helpers, and API shims
+  components/           # Reusable UI building blocks
+    Table/              # Virtualized table + sorting hook
+      index.tsx         # Table wrapper integrating virtualization + headers
+      VirtualTable.tsx  # react-window wrapper with sticky header context
+      Inner.tsx         # Sticky header + table layout
+      Row.tsx           # <tr/>
+      Cell.tsx          # <th/> / <td/>
+      helpers.ts        # defaultCompare and table helpers
+      useTableSort.ts   # Column sorting hook (asc/desc/none)
+    Button/
+    Layout/
+    Header/
+    Footer/
+    Container/
+    QueryEditor/
+    Pagination/
+  main.tsx              # App bootstrap (Vite/React)
+  index.css             # Styles
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **react, react-dom**: UI framework and DOM renderer.
+- **vite**: Fast dev server and build tool; **@vitejs/plugin-react-swc** for React/SWC.
+- **@monaco-editor/react**: Embeds Monaco editor for SQL editing and shortcuts.
+- **zustand**: For managing global states and sharing data between components
+- **react-window**: Virtualized row rendering for large tables.
+- **papaparse**: CSV parsing.
+- **sql-formatter**: Client-side SQL formatting. (Optional)
+- **node-sql-parser**: SQL query parser (Optional).
+- **react-icons**: Icon set (headers, buttons, status cues).
+- **tailwindcss, @tailwindcss/vite**: Utility-first styling; Vite integration.
+- **tailwind-merge, tw-merge**: Class utilities to resolve Tailwind class conflicts.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Dev tooling: **typescript**, **eslint**, **typescript-eslint**, **@eslint/js**, **eslint-plugin-react-hooks**, **eslint-plugin-react-refresh**, **globals**.
+
+## Page Load time
+
+## Optimization
+
+This app is built using CSR(client side rendering) strategy. This the application is small in size, but still we can do the initial page loading optimization.

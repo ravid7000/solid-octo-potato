@@ -60,7 +60,7 @@ export const useCurrentTable = create<CurrentTableState & CurrentTableAction>(
 
         // simulating query status api
         setQueryExecutionState("sending");
-        await delay(1000);
+        await delay(300);
 
         // simulating query status api
         setQueryExecutionState("executing");
