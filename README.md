@@ -7,6 +7,10 @@
 - Table: `react-window` virtualization, sticky header, per-column sorting
 - Export: JSON and CSV downloads
 
+## Demo
+https://github.com/user-attachments/assets/ce0d0b46-3fd9-4cdf-b0d5-31c9ca73816e
+
+
 ## Local Development
 
 1. Install: `npm install`
